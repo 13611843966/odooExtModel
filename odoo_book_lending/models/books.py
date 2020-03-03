@@ -20,6 +20,7 @@ class Books(models.Model):
     active = fields.Boolean(string="归档", default=True)
     name = fields.Char(string="图书名称", required=True, index=True, track_visibility='onchange')
     code = fields.Char(string="图书编号", index=True, track_visibility='onchange', default='New')
+    isbn = fields.Char(string="ISBN码", index=True, track_visibility='onchange')
     color = fields.Integer(string="Color")
     image = fields.Binary(string="封面图", default=_get_default_image)
     type_id = fields.Many2one(comodel_name="odoo.books.type", string="图书类型", track_visibility='onchange')

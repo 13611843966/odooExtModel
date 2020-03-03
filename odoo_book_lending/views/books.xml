@@ -8,6 +8,7 @@
             <tree default_order="id desc">
                 <field name="name"/>
                 <field name="code"/>
+                <field name="isbn"/>
                 <field name="image" widget="image" width="20px" height="20px"/>
                 <field name="type_id"/>
                 <field name="author"/>
@@ -44,11 +45,12 @@
                     <group col="2">
                         <group>
                             <field name="code" readonly="1"/>
-                            <field name="type_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="isbn" placeholder="图书的ISBN码..."/>
                             <field name="author"/>
                             <field name="version"/>
                         </group>
                         <group>
+                            <field name="type_id" options="{'no_create_edit': True, 'no_create': True}"/>
                             <field name="number"/>
                             <field name="price"/>
                             <field name="user_id" options="{'no_create_edit': True, 'no_create': True}"/>
@@ -162,6 +164,7 @@
             <search>
                 <field name="name"/>
                 <field name="code"/>
+                <field name="isbn"/>
                 <field name="type_id"/>
                 <field name="author"/>
                 <field name="version"/>
