@@ -10,6 +10,7 @@
                 <field name="app_id"/>
                 <field name="app_key" password="True"/>
                 <field name="priority"/>
+                <field name="company_ids"/>
             </tree>
         </field>
     </record>
@@ -36,6 +37,11 @@
                         <group>
                             <field name="priority"/>
                             <field name="code_length"/>
+                        </group>
+                    </group>
+                    <group col="1">
+                        <group>
+                            <field name="company_ids" required="1" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </group>
                     <notebook>

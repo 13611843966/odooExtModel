@@ -50,10 +50,10 @@ class SmsPartner(models.Model):
                     logging.info("ali-sms-result: {}".format(cli_res))
                     if cli_res['Code'] == 'OK':
                         # 创建验证码记录
-                        rec = self.create_verification_record(user, phone, cli_res['RequestId'], param_data['code'], template, ttype)
+                        self.create_verification_record(user, phone, cli_res['RequestId'], param_data['code'], template, ttype)
                         return {"state": True}
                     else:
-                        message = cli_res['Message']
+                        message = "运营商在发送短信是发生异常，原因：%s" % cli_res['Message']
                 except Exception as e:
                     return {"state": False, 'msg': "发送验证码失败,Error:{}".format(str(e))}
             return {"state": False, 'msg': message}

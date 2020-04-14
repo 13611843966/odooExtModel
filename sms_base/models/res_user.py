@@ -66,32 +66,6 @@ class ResUsers(models.Model):
             return super(ResUsers, cls).authenticate(db, user.login, password, user_agent_env)
         return super(ResUsers, cls).authenticate(db, login, password, user_agent_env)
 
-    @api.model
-    def create_user_by_sms_login(self, phone):
-        """
-        通过手机号创建系统用户
-        """
-        if not phone:
-            return False
-        # 创建Odoo用户
-        values = {
-            'active': True,
-            "login": phone,
-            "user_phone": phone,
-            "password": phone,
-            "name": phone,
-            'email': phone,
-        }
-        # 初始新用户权限
-        sms_group_id = self.env['ir.config_parameter'].sudo().get_param('sms_base.default_sms_group_id')
-        groups = self.env['new.user.groups'].sudo().search([('id', '=', sms_group_id)], limit=1)
-        if not groups:
-            values['groups_id'] = self.env.ref('base.group_user')
-        else:
-            values['groups_id'] = [(6, 0, groups.groups_ids.ids)]
-        user = self.sudo().create(values)
-        return user
-
 
 class ChangePasswordWizard(models.TransientModel):
     _inherit = 'change.password.wizard'

@@ -17,6 +17,7 @@
                 <field name="end_time"/>
                 <field name="timeout"/>
                 <field name="state"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>
@@ -32,6 +33,7 @@
         <field name="model">sms.verification.record</field>
         <field name="arch" type="xml">
             <search string="验证码记录">
+                <field name="company_id"/>
                 <field name="partner_id"/>
                 <field name="template_id"/>
                 <field name="user_id"/>
@@ -70,6 +72,7 @@
                 <field name="user_id"/>
                 <field name="phone"/>
                 <field name="ttype"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>

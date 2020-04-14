@@ -29,6 +29,7 @@ class SmsVerificationRecord(models.Model):
     timeout = fields.Integer(string='有效时长(分钟)', default=30)
     state = fields.Selection(string=u'状态', selection=[('normal', '未验证'), ('invalid', '已验证'), ], default='normal')
     ttype = fields.Selection(string="消息类型", selection=RECORDTYPE)
+    company_id = fields.Many2one(comodel_name="res.company", string="所属公司")
     
     @api.model
     def create(self, values):
@@ -56,3 +57,4 @@ class SmsSendRecord(models.Model):
     user_id = fields.Many2one(comodel_name='res.users', string=u'系统用户', index=True)
     phone = fields.Char(string="手机号码", index=True)
     ttype = fields.Selection(string="用于", selection=TEMPLATETYPE, default='code')
+    company_id = fields.Many2one(comodel_name="res.company", string="所属公司")

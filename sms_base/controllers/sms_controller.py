@@ -42,22 +42,15 @@ class OAuthController(Controller):
         if not user_phone:
             return json.dumps({'state': False, 'msg': "手机号码不能为空！"})
         _logger.info("手机号码:{}正在尝试发送验证码".format(user_phone))
-        # 获取服务商
-        partners = request.env['sms.partner'].sudo().get_partners_priority()
-        if not partners:
-            return json.dumps({"state": False, 'msg': "系统未找到可用的短信服务商，请联系管理员维护！"})
         # 验证员工是否有此手机号
         domain = [('user_phone', '=', user_phone)]
         user = request.env['res.users'].sudo().search(domain, limit=1)
         if not user:
-            # 判断系统是否允许自动注册
-            sms_auto_login = request.env['ir.config_parameter'].sudo().get_param('sms_base.default_sms_auto_login')
-            if not sms_auto_login:
-                return json.dumps({'state': False, 'msg': "抱歉，您的手机号未注册，请联系管理员完善信息！"})
-            # 创建用户
-            user = request.env['res.users'].sudo().create_user_by_sms_login(user_phone)
-            # 发送通知短信
-            partners.sudo().send_registration_message(user, user_phone)
+            return json.dumps({'state': False, 'msg': "抱歉，您的手机号未注册，请联系管理员完善信息！"})
+        # 获取服务商
+        partners = request.env['sms.partner'].sudo().get_partners_priority(user)
+        if not partners:
+            return json.dumps({"state": False, 'msg': "系统未找到可用的短信服务商，请联系管理员维护！"})
         # 使用服务商的发送验证码函数
         result = partners.sudo().send_message_code(user, user_phone, 'login')
         if result.get('state'):
@@ -75,12 +68,17 @@ class OAuthController(Controller):
         user_phone = values.get('phone')
         code = values.get('code')
         if not user_phone or not code:
-            return json.dumps({'state': False, 'msg': "手机号和验证码不正确！"})
+            return json.dumps({'state': False, 'msg': "手机号码和验证码不正确！"})
+        # 读取员工
+        user_domain = [('user_phone', '=', user_phone)]
+        user = request.env['res.users'].sudo().search(user_domain, limit=1)
+        if not user:
+            return json.dumps({'state': False, 'msg': "抱歉，您的手机号未注册，请联系管理员完善信息！"})
         # 检查验证码和登录手机有效性
-        domain = [('phone', '=', user_phone), ('code', '=', code), ('state', '=', 'normal')]
+        domain = [('phone', '=', user_phone), ('code', '=', code), ('state', '=', 'normal'), ('company_id', '=', user.company_id.id)]
         records = request.env['sms.verification.record'].sudo().search(domain)
         if not records:
-            return json.dumps({'state': False, 'msg': "验证码不存在,请重新输入！"})
+            return json.dumps({'state': False, 'msg': "验证码不正确,请重新输入！"})
         # 检查时效
         for record in records:
             if datetime.datetime.now() > record.end_time:

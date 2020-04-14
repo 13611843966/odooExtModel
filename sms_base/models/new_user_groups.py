@@ -13,3 +13,4 @@ class NewUserGroups(models.Model):
     name = fields.Char(string="名称", required=True)
     groups_ids = fields.Many2many(comodel_name='res.groups', string=u'权限列表')
 
+

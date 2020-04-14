@@ -26,6 +26,7 @@ class SmsPartner(models.Model):
     priority = fields.Integer(string=u'优先级(1-10)', default=5)
     code_length = fields.Integer(string=u'验证码长度', default=6)
     template_ids = fields.One2many(comodel_name='sms.template', inverse_name='partner_id', string=u'短信模板')
+    company_ids = fields.Many2many(comodel_name="res.company", string="适用公司")
 
     def generate_random_number(self):
         """
@@ -39,21 +40,23 @@ class SmsPartner(models.Model):
             numbers += ch
         return numbers
 
-    def get_partners_priority(self):
+    def get_partners_priority(self, user):
         """
         返回优先级高的运营服务商
+        :param user:
         :return:
         """
         partners = self.search([])
         if not partners:
             return False
-        # 判断优先级
+        # 判断优先级并判断服务商适用公司
         partners_priority = None
         priority = 0
         for partner in partners:
-            if partner.priority > priority:
-                priority = partner.priority
-                partners_priority = partner
+            if user.company_id.id in partner.company_ids.ids:
+                if partner.priority > priority:
+                    priority = partner.priority
+                    partners_priority = partner
         return partners_priority
 
     def send_message_code(self, user, phone, ttype):
@@ -98,6 +101,7 @@ class SmsPartner(models.Model):
             'code': code,
             'ttype': ttype,
             'timeout': template.timeout,
+            'company_id': user.company_id.id,
         })
         return True
 
@@ -118,6 +122,7 @@ class SmsPartner(models.Model):
             'user_id': user.id,
             'phone': phone,
             'ttype': ttype,
+            'company_id': user.company_id.id,
         })
         return True
 

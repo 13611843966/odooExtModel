@@ -32,6 +32,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="new_user_groups_menu" name="新用户权限" parent="configure_menu" sequence="2" action="new_user_groups_action"/>
+<!--    <menuitem id="new_user_groups_menu" name="新用户权限" parent="configure_menu" sequence="2" action="new_user_groups_action"/>-->
 
 </odoo>

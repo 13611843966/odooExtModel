@@ -9,7 +9,7 @@ $(function () {
     $("#login_result").hide();
     $("#regain_code").hide();
     $("#send_verification_code").hide();
-    console.log("初始化");
+    // console.log("初始化");
 
     // 初始化滑动验证
     var slider = new SliderUnlock("#slider", {
