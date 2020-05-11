@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <menuitem name="CRM" id="root_menu" web_icon="odoo_crm,static/description/icon.png" sequence="20"/>
+    <menuitem name="CRM" id="root_menu" web_icon="odoo_crm,static/description/icon.png" sequence="20" groups="odoo_crm.sale_groups"/>
 
     <menuitem name="客户" id="client_root_ment" parent="root_menu" sequence="2"/>
 

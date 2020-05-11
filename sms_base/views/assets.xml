@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <menuitem name="短信" id="main_menu" web_icon="sms_base,static/description/icon.png" sequence="22" groups="sms_base.manage_groups"/>
+        <menuitem name="短信" id="main_menu" web_icon="sms_base,static/description/icon.png" sequence="51" groups="sms_base.manage_groups"/>
 
         <menuitem name="日志" id="record_menu" parent="main_menu" sequence="80"/>
 
